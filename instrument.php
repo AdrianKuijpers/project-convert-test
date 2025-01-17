@@ -2,34 +2,6 @@
 require 'modules/database.php';
 require 'modules/functions.php';
 require 'modules/session.php';
-
-
-if(isset($_POST['add-to-cart'])) {
-    $partId = filter_input(INPUT_POST, 'part-id', FILTER_SANITIZE_SPECIAL_CHARS);
-    $part = getPart($partId);
-    if (!isset($_SESSION['shopping-cart'])) {
-        $_SESSION['shopping-cart'] = [];
-    }
-
-    $shoppingCart = $_SESSION['shopping-cart'];
-    $partExist = false;
-    $existingShoppingCartProduct = null;
-    foreach ($shoppingCart as $shoppingCartProduct) {
-        if ($shoppingCartProduct->getPart()->id === (int)$partId) {
-            $partExist = true;
-            $existingShoppingCartProduct = $shoppingCartProduct;
-        }
-    }
-
-    if ($partExist) {
-        $existingShoppingCartProduct->setQuantity($existingShoppingCartProduct->getQuantity() + 1);
-    } else {
-        $shoppingCart[] = new ShoppingCartProduct($part, 1);
-    }
-    $_SESSION['shopping-cart'] = $shoppingCart;
-    header('Location: parts-detail.php?id=' . $partId);
-    exit();
-}
 ?>
 <!DOCTYPE html>
 <html>
@@ -37,7 +9,7 @@ if(isset($_POST['add-to-cart'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Parts4u Onderdeel details</title>
+    <title>Parts4u Onderdelen</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
@@ -65,43 +37,42 @@ if(isset($_POST['add-to-cart'])) {
 
         </div>
         <?php
-            $partId = $_GET['id'];
-            $part = getPart($partId);
-            $vendor = getVendor($part->vendorId);
+            $categorieId = $_GET['id'];
+            $categorie = getcategorie($categorieId);
         ?>
         <div class="row">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-                    <li class="breadcrumb-item"><a href="vendor.php">Fabrikanten</a></li>
-                    <li class="breadcrumb-item"><a href="parts.php?id=<?= $part->vendorId?>"><?=$vendor['name']?></a></li>
-                    <li class="breadcrumb-item active" aria-current="page"><?=$part->name?></li>
+                    <li class="breadcrumb-item"><a href="categorie.php">Fabrikanten</a></li>
+                    <li class="breadcrumb-item active" aria-current="page"><?=$categorie['name']?></li>
                 </ol>
             </nav>
         </div>
-
         <div class="row">
-            <div class="col-md-4 d-flex align-items-stretch mt-3 mb-4">
-                <div class="card w-100">
-                    <div class="card-body text-center">
-                        <p>HALLO</p>
-                        <img src="img/<?= $part->image ?>" class="card-img-top flex-grow-1 object-fit-cover">
-                        <p>HALLO</p>
-                        <div class="card-body">
-                            <h4 class="card-title"><?= $part->name ?></h4>
-                            <h3 class="card-text">€<?= $part->price ?></h3>
-                            <p class="card-text"><?= $part->description ?></p>
+            <!-- hieronder komen de computeronderdelen van een fabrikant in de vorm van bijvoorbeeld cards of een tabel -->
+            <?php
+            $instruments = getinstruments($categorieId);
+            foreach ($instruments as $instrument) {
+                ?>
+                <!-- hieronder komen de instruments -->
+                <div class="col-md-3 d-flex align-items-stretch mt-3 mb-4">
+                    <div class="card w-100">
+                        <div class="card-body text-center">
+                            <img src="CSS/IMG/<?= $instrument['img'] ?>" class="card-img-top flex-grow-1 object-fit-cover">
+                            <div class="card-body">
+                                <h4 class="card-title"><?= $instrument['name'] ?></h4>
+                            </div>
+                            <a href="instruments-detail.php?id=<?=$instrument['id']?>"
+                               class="card-link text-dark stretched-link text-decoration-none"><?= $instrument['description'] ?></a>
                         </div>
-
-                        <form method="post">
-                            <input type="hidden" name="part-id" value="<?=$part->id?>">
-                        <button type="submit" name="add-to-cart" class="btn btn-primary">Voeg aan winkelwagen toe</button>
-                    </form>
                     </div>
                 </div>
-            </div>
+                <?php
+            }
+            ?>
+
         </div>
-    </div>
 
 </main>
 <footer class="bg-dark">

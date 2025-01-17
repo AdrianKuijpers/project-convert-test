@@ -10,7 +10,7 @@
                     <a class="nav-link active fs-5 text-white" aria-current="page" href="index.php">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-secondary fs-5" href="vendor.php">Fabrikanten</a>
+                    <a class="nav-link text-secondary fs-5" href="categorie.php">Fabrikanten</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-light" href="shopping-cart.php"><i class="bi bi-cart"></i>
@@ -26,7 +26,7 @@
             </ul>
             <ul class="navbar-nav ms-auto">
                 <?php
-                if (!isset($_SESSION['user'])) {
+                if (!isset($_SESSION['users'])) {
 
                 ?>
                 <li class="nav-item">
@@ -42,7 +42,7 @@
                         <a class="nav-link" href="logout.php">Uitloggen</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="profile.php"><?=$_SESSION['user']->email ?></a>
+                        <a class="nav-link" href="profile.php"><?=$_SESSION['users']->email ?></a>
                     </li>
 
                 <?php

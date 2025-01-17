@@ -9,7 +9,7 @@ require 'modules/session.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Parts4u Onderdelen</title>
+    <title>Parts4u Fabrikanten</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
@@ -23,7 +23,7 @@ require 'modules/session.php';
     <?php
     include 'nav.php';
     ?>
-    <div class="container-fluid ">
+    <div class="container-fluid">
         <div class="row"></div>
     </div>
 </header>
@@ -32,46 +32,42 @@ require 'modules/session.php';
         <div class="row">
             <div class="col-md-12 text-center pt-3">
                 <p class="fw-bold display-4">Welkom bij Parts4u</p>
+                <p class="fs-4">Selecteer een merk</p>
 
             </div>
 
         </div>
-        <?php
-            $vendorId = $_GET['id'];
-            $vendor = getVendor($vendorId);
-        ?>
         <div class="row">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-                    <li class="breadcrumb-item"><a href="vendor.php">Fabrikanten</a></li>
-                    <li class="breadcrumb-item active" aria-current="page"><?=$vendor['name']?></li>
+                    <li class="breadcrumb-item"><a href="categorie.php">Fabrikanten</a></li>
                 </ol>
             </nav>
         </div>
         <div class="row">
-            <!-- hieronder komen de computeronderdelen van een fabrikant in de vorm van bijvoorbeeld cards of een tabel -->
+            <!-- Dit is een dummy card die je kunt gebruiken in je php code waar je alle fabrikanten weergeeft-->
+
             <?php
-            $parts = getParts($vendorId);
-            foreach ($parts as $part) {
-                ?>
-                <!-- hieronder komen de parts -->
+            $categories = getcategories();
+            foreach ($categories as $categorie) {
+            ?>
+                <!-- hieronder komen de fabrikanten -->
                 <div class="col-md-3 d-flex align-items-stretch mt-3 mb-4">
                     <div class="card w-100">
                         <div class="card-body text-center">
-                            <img src="img/<?= $part['image'] ?>" class="card-img-top flex-grow-1 object-fit-cover">
+                            <img src="CSS/IMG/<?= $categorie['img'] ?>" class="card-img-top flex-grow-1 object-fit-cover">
                             <div class="card-body">
-                                <h4 class="card-title"><?= $part['name'] ?></h4>
+                                <h4 class="card-title"><?= $categorie['name'] ?></h4>
                             </div>
-                            <a href="parts-detail.php?id=<?=$part['id']?>"
-                               class="card-link text-dark stretched-link text-decoration-none"><?= $part['description'] ?></a>
+                            <a href="instrument.php?id=<?= $categorie['id'] ?>"
+                               class="card-link text-dark stretched-link text-decoration-none"><?= $categorie['description'] ?></a>
                         </div>
                     </div>
                 </div>
-                <?php
+            <?php
             }
             ?>
-
         </div>
 
 </main>
@@ -105,4 +101,3 @@ require 'modules/session.php';
 </footer>
 </body>
 </html>
-

@@ -1,10 +1,10 @@
 <?php
-class Part
+class instrument
 {
     public $id;
     public $name;
     public $description;
-    public $image;
+    public $img;
     public $price;
     public $vendorId;
 

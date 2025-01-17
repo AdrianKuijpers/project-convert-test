@@ -2,6 +2,34 @@
 require 'modules/database.php';
 require 'modules/functions.php';
 require 'modules/session.php';
+
+
+if(isset($_POST['add-to-cart'])) {
+    $instrumentId = filter_input(INPUT_POST, 'instrument-id', FILTER_SANITIZE_SPECIAL_CHARS);
+    $instrument = getinstrument($instrumentId);
+    if (!isset($_SESSION['shopping-cart'])) {
+        $_SESSION['shopping-cart'] = [];
+    }
+
+    $shoppingCart = $_SESSION['shopping-cart'];
+    $instrumentExist = false;
+    $existingShoppingCartProduct = null;
+    foreach ($shoppingCart as $shoppingCartProduct) {
+        if ($shoppingCartProduct->getinstrument()->id === (int)$instrumentId) {
+            $instrumentExist = true;
+            $existingShoppingCartProduct = $shoppingCartProduct;
+        }
+    }
+
+    if ($instrumentExist) {
+        $existingShoppingCartProduct->setQuantity($existingShoppingCartProduct->getQuantity() + 1);
+    } else {
+        $shoppingCart[] = new ShoppingCartProduct($instrument, 1);
+    }
+    $_SESSION['shopping-cart'] = $shoppingCart;
+    header('Location: instruments-detail.php?id=' . $instrumentId);
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -9,7 +37,7 @@ require 'modules/session.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Parts4u Fabrikanten</title>
+    <title>Parts4u Onderdeel details</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
@@ -23,7 +51,7 @@ require 'modules/session.php';
     <?php
     include 'nav.php';
     ?>
-    <div class="container-fluid">
+    <div class="container-fluid ">
         <div class="row"></div>
     </div>
 </header>
@@ -32,43 +60,46 @@ require 'modules/session.php';
         <div class="row">
             <div class="col-md-12 text-center pt-3">
                 <p class="fw-bold display-4">Welkom bij Parts4u</p>
-                <p class="fs-4">Selecteer een merk</p>
 
             </div>
 
         </div>
+        <?php
+            $instrumentId = $_GET['id'];
+            $instrument = getinstrument($instrumentId);
+            $categorie = getcategorie($instrument->categorieId);
+        ?>
         <div class="row">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-                    <li class="breadcrumb-item"><a href="vendor.php">Fabrikanten</a></li>
+                    <li class="breadcrumb-item"><a href="categorie.php">Fabrikanten</a></li>
+                    <li class="breadcrumb-item"><a href="instrument.php?id=<?= $instrument->categorieId?>"><?=$categorie['name']?></a></li>
+                    <li class="breadcrumb-item active" aria-current="page"><?=$instrument->name?></li>
                 </ol>
             </nav>
         </div>
-        <div class="row">
-            <!-- Dit is een dummy card die je kunt gebruiken in je php code waar je alle fabrikanten weergeeft-->
 
-            <?php
-            $vendors = getVendors();
-            foreach ($vendors as $vendor) {
-            ?>
-                <!-- hieronder komen de fabrikanten -->
-                <div class="col-md-3 d-flex align-items-stretch mt-3 mb-4">
-                    <div class="card w-100">
-                        <div class="card-body text-center">
-                            <img src="img/<?= $vendor['image'] ?>" class="card-img-top flex-grow-1 object-fit-cover">
-                            <div class="card-body">
-                                <h4 class="card-title"><?= $vendor['name'] ?></h4>
-                            </div>
-                            <a href="parts.php?id=<?= $vendor['id'] ?>"
-                               class="card-link text-dark stretched-link text-decoration-none"><?= $vendor['description'] ?></a>
+        <div class="row">
+            <div class="col-md-4 d-flex align-items-stretch mt-3 mb-4">
+                <div class="card w-100">
+                    <div class="card-body text-center">
+                        <img src="CSS/IMG/<?= $instrument->img ?>" class="card-img-top flex-grow-1 object-fit-cover">
+                        <div class="card-body">
+                            <h4 class="card-title"><?= $instrument->name ?></h4>
+                            <h3 class="card-text">€<?= $instrument->price ?></h3>
+                            <p class="card-text"><?= $instrument->description ?></p>
                         </div>
+
+                        <form method="post">
+                            <input type="hidden" name="instrument-id" value="<?=$instrument->id?>">
+                        <button type="submit" name="add-to-cart" class="btn btn-primary">Voeg aan winkelwagen toe</button>
+                    </form>
                     </div>
                 </div>
-            <?php
-            }
-            ?>
+            </div>
         </div>
+    </div>
 
 </main>
 <footer class="bg-dark">
@@ -101,3 +132,4 @@ require 'modules/session.php';
 </footer>
 </body>
 </html>
+

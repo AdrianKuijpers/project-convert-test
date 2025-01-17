@@ -89,7 +89,7 @@ require 'modules/session.php';
                     <div class="card w-100">
                         <img src="img/parts4u.png" class="card-img-top flex-grow-1 object-fit-cover" height="500">
                         <div class="card-body">
-                            <a class="card-link text-dark stretched-link text-decoration-none" href="vendor.php">Bestel bij ons je nieuwe onderdelen</a>
+                            <a class="card-link text-dark stretched-link text-decoration-none" href="categorie.php">Bestel bij ons je nieuwe onderdelen</a>
                         </div>
                     </div>
                 </div>
@@ -97,7 +97,7 @@ require 'modules/session.php';
                     <div class="card w-100">
                         <img src="img/customer.jpg" class="card-img-top flex-grow-1 object-fit-cover" height="500">
                         <div class="card-body">
-                            <a class="card-link text-dark stretched-link text-decoration-none" href="vendor.php">Keuze uit verschillende soorten onderdelen</a>
+                            <a class="card-link text-dark stretched-link text-decoration-none" href="categorie.php">Keuze uit verschillende soorten onderdelen</a>
                         </div>
                     </div>
                 </div>

@@ -2,29 +2,29 @@
 
 class ShoppingCartProduct
 {
-    private Part $part;
+    private instrument $instrument;
     private int $quantity;
 
-    public function __construct($part, $quantity)
+    public function __construct($instrument, $quantity)
     {
-        $this->part = $part;
+        $this->instrument = $instrument;
         $this->quantity = $quantity;
     }
 
     /**
-     * @return Part
+     * @return instrument
      */
-    public function getPart(): Part
+    public function getinstrument(): instrument
     {
-        return $this->part;
+        return $this->instrument;
     }
 
     /**
-     * @param Part $part
+     * @param instrument $instrument
      */
-    public function setPart(Part $part): void
+    public function setinstrument(instrument $instrument): void
     {
-        $this->part = $part;
+        $this->instrument = $instrument;
     }
 
     /**
@@ -45,6 +45,6 @@ class ShoppingCartProduct
 
     public function getPrice(): float
     {
-        return (float)$this->getQuantity() * $this->part->price;
+        return (float)$this->getQuantity() * $this->instrument->price;
     }
 }

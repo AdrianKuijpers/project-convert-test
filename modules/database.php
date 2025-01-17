@@ -1,8 +1,8 @@
 <?php
 //change these variables to your liking
 $host = '127.0.0.1';
-$db   = 'parts4u';
-$user = 'root';
+$db   = 'reviewmyexperience_database';
+$users = 'root';
 $pass = '';
 $charset = 'utf8mb4';
 
@@ -16,11 +16,11 @@ $options = [
 
 try {
     //use the $pdo variable as a global on your pages
-    $pdo = new PDO($dsn, $user, $pass, $options);
+    $pdo = new PDO($dsn, $users, $pass, $options);
 
     //uncomment these lines if you want to fetch classes, don't forget to define the classes
-    include_once('classes/User.php');
-    include_once('classes/Part.php');
+    include_once('classes/Users.php');
+    include_once('classes/instrument.php');
     include_once('classes/ShoppingCartProduct.php');
 
 } catch (\PDOException $e) {

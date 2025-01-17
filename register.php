@@ -40,7 +40,7 @@ if (isset($_POST['register'])) {
     }
 
     if (count($errors) === 0) {
-        saveUser($inputs);
+        saveUsers($inputs);
 
         header('Location: login.php');
     }

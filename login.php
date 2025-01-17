@@ -29,14 +29,14 @@ if (isset($_POST['login'])) {
     }
 
     if(count($errors) === 0){
-        $user = getUser($email);
-        if (!isset($user)){
+        $users = getusers($email);
+        if (!isset($users)){
             $errors['credentials'] = EMAIL_PASSWORD_COMBINATION_INVALID;
         }
         else{
             $password = $inputs['password'];
-            if(password_verify($password, $user->password)){
-                $_SESSION['user'] = $user;
+            if(password_verify($password, $users->password)){
+                $_SESSION['users'] = $users;
                 header('Location: index.php');
             }
             else{

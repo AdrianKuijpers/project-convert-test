@@ -80,10 +80,10 @@ if(isset($_SESSION['shopping-cart'])) {
                         $totalPrice = $totalPrice + $shoppingCartProduct->getPrice();
                         ?>
                     <tr>
-                        <td><?= $shoppingCartProduct->getPart()->id ?></td>
-                        <td><?= $shoppingCartProduct->getPart()->name ?></td>
+                        <td><?= $shoppingCartProduct->getinstrument()->id ?></td>
+                        <td><?= $shoppingCartProduct->getinstrument()->name ?></td>
                         <td><?= $shoppingCartProduct->getQuantity() ?></td>
-                        <td><?= number_format($shoppingCartProduct->getPart()->price, 2) ?></td>
+                        <td><?= number_format($shoppingCartProduct->getinstrument()->price, 2) ?></td>
                         <td><?= number_format($shoppingCartProduct->getPrice(), 2) ?></td>
                     </tr>
                     <?php
